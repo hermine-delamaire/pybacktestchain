@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.2.0 (2025-01-12)
+
+### New Class Added 
+
+Backtest_simple class for testing momentum strategy.
+- Failed to run the test
+
+
 ## v0.1.0 (2025-01-12)
 
 ### New Class Added
