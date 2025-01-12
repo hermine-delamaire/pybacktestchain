@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.1.0 (2025-01-12)
+
+### Added
+
+Momentumstrategy` class for implementing a momentum strategy.
+- Computes portfolio weights based on past returns.
+- Designed with a look-back period which can be adjusted.
+- Takes care of special cases including missing or negative returns.
+
+
 ## v0.0.1 (2024-08-28)
 
 ### Fix
