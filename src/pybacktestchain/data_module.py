@@ -91,7 +91,7 @@ class Information:
     data_module: DataModule = None # Data module
     time_column: str = 'Date'
     company_column: str = 'ticker'
-    adj_close_column: str = 'Close'
+    adj_close_column: str = 'Adj Close'
 
     def slice_data(self, t : datetime):
         # Get the data module 
@@ -201,18 +201,22 @@ class MomentumStrategy(Information):
     # Default look-back period in days
     look_back_period: int = 90   
 
-    def compute_portfolio(self, t:datetime, information_set):
+    def compute_portfolio(self, t:datetime, information_set=None):
+        logging.info(f"Computing portfolio for time {t} with look-back period {self.look_back_period} days.")
+
         # Define look-back period start
         look_back_start = t - timedelta(days=self.look_back_period)
 
         # Get the data module 
         data = self.data_module.data
+        logging.debug(f"Data module contains {len(data)} rows.")
 
         # Convert dataframe into datetime format
         data[self.time_column] = pd.to_datetime(data[self.time_column])
 
         # Get the data between look_back_start and t 
         sliced_data = data[(data[self.time_column] >= look_back_start) & (data[self.time_column] < t)]
+        logging.debug(f"Sliced data contains {len(sliced_data)} rows.")
 
         if sliced_data.empty:
             logging.warning(f"No data available for look-back period ending at time {t}")
@@ -229,10 +233,13 @@ class MomentumStrategy(Information):
 
         if total_return == 0:
             logging.warning(f"For the period ending at time {t}, all returns are zero or negative")
-            return {ticker: 1/len(mean_returns) for ticker in mean_returns.index}
+            weights = {ticker: 1 / len(mean_returns) for ticker in mean_returns.index}
+            print(f"Equal weights applied due to zero/negative returns: {weights}")
+            return weights
 
         # Calculate weights and put them in a dictionnary
         weights = (mean_returns / total_return).to_dict()
+        logging.info(f"Computed portfolio weights: {weights}")
         return weights
  
         

@@ -222,8 +222,6 @@ class Backtest:
     verbose: bool = True
     broker = Broker(cash=initial_cash, verbose=verbose)
 
-
-
     def __post_init__(self):
         self.backtest_name = generate_random_name()
         self.broker.initialize_blockchain(self.name_blockchain)
@@ -272,3 +270,75 @@ class Backtest:
         # store the backtest in the blockchain
         self.broker.blockchain.add_block(self.backtest_name, df.to_string())
     
+
+class Backtest_simple:
+    def __init__(
+        self,
+        initial_date: datetime,
+        final_date: datetime,
+        universe=None,
+        information_class: type = None,
+        rebalance_flag: type = None,
+        risk_model: type = None,
+        initial_cash: int = 1000000,
+        verbose: bool = True,
+    ):
+        self.initial_date = initial_date
+        self.final_date = final_date
+        self.universe = universe or ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NVDA', 'INTC', 'CSCO', 'NFLX']
+        self.information_class = information_class
+        self.rebalance_flag = rebalance_flag
+        self.risk_model = risk_model
+        self.initial_cash = initial_cash
+        self.verbose = verbose
+        self.broker = Broker(cash=initial_cash, verbose=verbose)
+        self.backtest_name = "test_backtest"
+
+    def run_backtest(self):
+        logging.info(f"Running backtest from {self.initial_date} to {self.final_date}.")
+        logging.info("Retrieving price data for universe.")
+
+        # Fetch historical data
+        init_ = self.initial_date.strftime('%Y-%m-%d')
+        final_ = self.final_date.strftime('%Y-%m-%d')
+        df = get_stocks_data(self.universe, init_, final_)
+        print(df.head())
+
+        # Initialize DataModule
+        data_module = DataModule(data=df)
+
+        # Create Information object
+        info = self.information_class(
+            data_module=data_module,
+            time_column='Date',
+            company_column='ticker',
+            adj_close_column='Adj Close'
+        )
+
+        # Run the backtest loop
+        for t in pd.date_range(start=self.initial_date, end=self.final_date, freq='D'):
+            if self.risk_model:
+                prices = info.get_prices(t)
+                portfolio = info.compute_portfolio(t, info.compute_information(t))
+                self.risk_model.trigger_stop_loss(t, portfolio, prices, self.broker)
+
+            if self.rebalance_flag and self.rebalance_flag().time_to_rebalance(t):
+                print(f"Rebalancing triggered on {t}")
+                information_set = info.compute_information(t)
+                portfolio = info.compute_portfolio(t, information_set)
+                print(f"Rebalanced portfolio weights: {portfolio}")
+                prices = info.get_prices(t)
+                self.broker.execute_portfolio(portfolio, prices, t)
+
+        # Log final results
+        print(f"Universe tickers: {self.universe}")
+        logging.info(f"Backtest completed. Final portfolio value: {self.broker.get_portfolio_value(info.get_prices(self.final_date))}")
+        transaction_log = self.broker.get_transaction_log()
+        
+        # Save transaction log
+        transaction_log.to_csv(f"backtests/{self.backtest_name}.csv")
+        logging.info(f"Transaction log saved to backtests/{self.backtest_name}.csv")
+    
+    
+
+
