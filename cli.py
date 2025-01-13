@@ -2,7 +2,7 @@ import argparse
 from datetime import datetime
 from pybacktestchain.broker import Backtest, Backtest_simple
 from pybacktestchain.broker import EndOfMonth, StopLoss
-from pybacktestchain.data_module import MomentumStrategy, Information, FirstTwoMoments
+from pybacktestchain.data_module import MomentumStrategy, Information, FirstTwoMoments, EqualWeightStrategy, MeanReversionStrategy
 
 def main():
     # Setting up the arguments
@@ -13,14 +13,16 @@ def main():
     parser.add_argument("--verbose", action="store_true", help="Enable detailed logging.")
     # Simple backtest is the one I created, Advanced backtest is the one that we had in class already for the blockchain
     parser.add_argument("--mode", type=str, choices=["simple", "advanced"], default="simple", help="Select the backtest mode: simple or advanced.")
-    parser.add_argument("--strategy", type=str, choices=["momentum", "first_two_moments"], default="momentum", help="Select the strategy for the backtest.")
+    parser.add_argument("--strategy", type=str, choices=["momentum", "first_two_moments", "mean_reversion", "equal_weight"], default="momentum", help="Select the strategy for the backtest.")
 
     args = parser.parse_args()
 
     # Creating a dictionnary with the different strategies available
     strategy_map = {
         "momentum": MomentumStrategy,
-        "first_two_moments": FirstTwoMoments
+        "first_two_moments": FirstTwoMoments,
+        "mean_reversion": MeanReversionStrategy,
+        "equal_weight": EqualWeightStrategy,
     }
 
     strategy_class = strategy_map[args.strategy]

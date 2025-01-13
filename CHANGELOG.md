@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.4.0 (2025-01-13)
+
+### Fixed
+
+- Tried to implement a backtest for both new strategies
+
+### Added
+
+- Added a MeanReversionStrategy class (to target underpriced assets based on historical average, tendency to revert to historical mean)
+- Added an EqualWeightsStrategy class (to allocated ewqual weights to all assets constituting the portfolio)
+- Updated CLI to include these new strategies
+
 ## v0.3.0 (2025-01-13)
 
 ### Added 
@@ -22,7 +34,7 @@ Backtest_simple class for testing momentum strategy.
 
 ## v0.1.0 (2025-01-12)
 
-### New Class Added
+### Added
 
 Momentumstrategy` class for implementing a momentum strategy.
 - Computes portfolio weights based on past returns.

@@ -241,7 +241,62 @@ class MomentumStrategy(Information):
         weights = (mean_returns / total_return).to_dict()
         logging.info(f"Computed portfolio weights: {weights}")
         return weights
+    
+@dataclass
+class MeanReversionStrategy(Information):
+    # Default look-back period in days
+    look_back_period: int = 90  
+
+    def compute_portfolio(self, t: datetime):
+        logging.info(f"[MeanReversionStrategy] Computing portfolio for time {t}.")
+        
+        # Define look-back period start
+        look_back_start = t - timedelta(days=self.look_back_period)
+
+        # Get the data module
+        data = self.data_module.data
+
+        # Convert dataframe into datetime format
+        data[self.time_column] = pd.to_datetime(data[self.time_column])
+
+        # Get the data between look_back_start and t
+        sliced_data = data[(data[self.time_column] >= look_back_start) & (data[self.time_column] < t)]
+
+        if sliced_data.empty:
+            logging.warning(f"No data available for look-back period ending at time {t}. Returning empty portfolio.")
+            return {}
+
+        # Calculate rolling mean and current prices
+        mean_prices = sliced_data.groupby(self.company_column)[self.adj_close_column].mean()
+        current_prices = sliced_data.groupby(self.company_column)[self.adj_close_column].last()
+
+        # Calculate z-scores for mean reversion
+        z_scores = (mean_prices - current_prices) / mean_prices
+        z_scores = z_scores.clip(lower=0)  # We only consider underpriced assets
+
+        total_z_score = z_scores.sum()
+        if total_z_score == 0:
+            logging.warning(f"No assets show reversion potential at {t}. Returning equal weights.")
+            return {ticker: 1 / len(mean_prices) for ticker in mean_prices.index}
+
+        # Calculate portfolio weights
+        weights = (z_scores / total_z_score).to_dict()
+        logging.info(f"[MeanReversionStrategy] Computed portfolio weights: {weights}")
+        return weights
  
+@dataclass
+class EqualWeightStrategy(Information):
+    def compute_portfolio(self, t: datetime):
+        logging.info(f"[EqualWeightStrategy] Computing portfolio for time {t}.")
+
+        # Get the list of all the companies
+        companies = self.data_module.data[self.company_column].unique()
+
+        # Assign equal weights to all the companies
+        weights = {ticker: 1 / len(companies) for ticker in companies}
+        logging.info(f"[EqualWeightStrategy] Computed portfolio weights: {weights}")
+        return weights
+
         
 
 
