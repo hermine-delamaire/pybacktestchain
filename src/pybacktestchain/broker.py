@@ -186,6 +186,21 @@ class EndOfMonth(RebalanceFlag):
         return pd_date == last_business_day
 
 @dataclass
+class EndOfWeek(RebalanceFlag):
+    def time_to_rebalance(self, t: datetime):
+        # Convert to pandas Timestamp for convenience
+        pd_date = pd.Timestamp(t)
+        # Monday is 0 so Friday is 4
+        return pd_date.weekday() == 4
+    
+@dataclass
+class EndOfDay(RebalanceFlag):
+    def time_to_rebalance(self, t: datetime):
+        # Rebalancing occurs every day so the method always returns True 
+        return True
+
+
+@dataclass
 class RiskModel:
     def trigger_stop_loss(self, t: datetime, portfolio: dict, prices: dict):
         pass

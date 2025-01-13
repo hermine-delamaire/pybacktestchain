@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## v0.6.0 (2025-01-13)
+
+### Added
+
+- Created EndOfDay and EndOfWeek class for daily and weekly rebalancing
+- Enhanced CLI to support:
+    - multiple strategies via "--strategies"
+    - dynamic rebalancing frequency via "--rebalance-frequency"
+
+### Fixed
+
+- Minor bugs for CLI arguments handling
+
+### Changed 
+
+- Updated CLI to use "--strategies" instead of "--strategy" 
+- Adjusted the rebalancing logic to be more flexible and dyanamic for the user
+
 ## v0.5.0 (2025-01-13)
 
 ### Added
