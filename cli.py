@@ -14,6 +14,7 @@ def main():
     # Simple backtest is the one I created, Advanced backtest is the one that we had in class already for the blockchain
     parser.add_argument("--mode", type=str, choices=["simple", "advanced"], default="simple", help="Select the backtest mode: simple or advanced.")
     parser.add_argument("--strategy", type=str, choices=["momentum", "first_two_moments", "mean_reversion", "equal_weight"], default="momentum", help="Select the strategy for the backtest.")
+    parser.add_argument("--universe", type=str, help="Provide the path to a csv file containing the stock tickers.")
 
     args = parser.parse_args()
 
@@ -27,19 +28,32 @@ def main():
 
     strategy_class = strategy_map[args.strategy]
 
+    # Load universe from CSV if specified as such
+    if args.universe:
+        import pandas as pd
+        universe_df = pd.read_csv(args.universe)
+        if 'ticker' not in universe_df.columns:
+            raise ValueError("The custom universe file must contain a 'ticker' column.")
+        universe = universe_df['ticker'].tolist()
+        print(f"[INFO] Loaded custom universe: {universe}")
+    else:
+        universe = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NVDA', 'INTC', 'CSCO', 'NFLX']
+
+
     # Running the backtest in the mode chosen
     if args.mode == "simple":
-        print("Running simple backtest...")
+        print("[INFO] Running simple backtest...")
         backtest = Backtest_simple(
             initial_date=datetime.strptime(args.start_date, "%Y-%m-%d"),
             final_date=datetime.strptime(args.end_date, "%Y-%m-%d"),
             information_class=strategy_class,
             initial_cash=args.initial_cash,
             verbose=args.verbose,
+            universe=universe
         )
 
     else:
-        print("Running advanced backtest...")
+        print("[INFO] Running advanced backtest...")
         backtest = Backtest(
             initial_date=datetime.strptime(args.start_date, "%Y-%m-%d"),
             final_date=datetime.strptime(args.end_date, "%Y-%m-%d"),
@@ -48,6 +62,7 @@ def main():
             risk_model=StopLoss,
             initial_cash=args.initial_cash,
             verbose=args.verbose,
+            universe=universe
         )
 
     backtest.run_backtest

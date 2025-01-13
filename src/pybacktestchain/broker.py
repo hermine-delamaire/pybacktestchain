@@ -2,6 +2,7 @@ import pandas as pd
 import logging
 from dataclasses import dataclass
 from datetime import datetime
+import random
 import os 
 import pickle
 from pybacktestchain.data_module import UNIVERSE_SEC, FirstTwoMoments, get_stocks_data, DataModule, Information
@@ -276,7 +277,7 @@ class Backtest_simple:
         self,
         initial_date: datetime,
         final_date: datetime,
-        universe=None,
+        universe: list = None,
         information_class: type = None,
         rebalance_flag: type = None,
         risk_model: type = None,
@@ -285,24 +286,27 @@ class Backtest_simple:
     ):
         self.initial_date = initial_date
         self.final_date = final_date
-        self.universe = universe or ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NVDA', 'INTC', 'CSCO', 'NFLX']
+        self.universe = universe if universe else ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'TSLA', 'NVDA', 'INTC', 'CSCO', 'NFLX']
         self.information_class = information_class
         self.rebalance_flag = rebalance_flag
         self.risk_model = risk_model
         self.initial_cash = initial_cash
         self.verbose = verbose
         self.broker = Broker(cash=initial_cash, verbose=verbose)
-        self.backtest_name = "test_backtest"
+
+        # To have a dynamically generated name to avoid confusion
+        self.backtest_name = f"backtest_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{random.randint(1000, 9999)}" 
 
     def run_backtest(self):
         logging.info(f"Running backtest from {self.initial_date} to {self.final_date}.")
+        logging.info(f"Using universe: {self.universe}")
         logging.info("Retrieving price data for universe.")
 
         # Fetch historical data
         init_ = self.initial_date.strftime('%Y-%m-%d')
         final_ = self.final_date.strftime('%Y-%m-%d')
         df = get_stocks_data(self.universe, init_, final_)
-        print(df.head())
+        logging.debug(f"Head of the data:\n{df.head()}")
 
         # Initialize DataModule
         data_module = DataModule(data=df)

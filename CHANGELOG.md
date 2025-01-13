@@ -1,16 +1,28 @@
 # CHANGELOG
 
-## v0.4.0 (2025-01-13)
+## v0.5.0 (2025-01-13)
+
+### Added
+
+- Support for custom universe with the "--universe" argument in the CLI file. With a CSV file, users can specify their own universe.
+- Created a custom_universe file to test this new feature 
 
 ### Fixed
 
-- Tried to implement a backtest for both new strategies
+- Checked that the CSV file contained a ticker column to move forward
+
+
+## v0.4.0 (2025-01-13)
 
 ### Added
 
 - Added a MeanReversionStrategy class (to target underpriced assets based on historical average, tendency to revert to historical mean)
 - Added an EqualWeightsStrategy class (to allocated ewqual weights to all assets constituting the portfolio)
 - Updated CLI to include these new strategies
+
+### Fixed
+
+- Tried to implement a backtest for both new strategies
 
 ## v0.3.0 (2025-01-13)
 
