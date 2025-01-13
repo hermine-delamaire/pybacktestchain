@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.3.0 (2025-01-13)
+
+### Added 
+
+- Added Command Line Interface functionality for Backtest_simple and Backtest classes
+- Integrated support for two strategies (Momentum and FirstTwoMoments)
+
+### Fixed 
+
+- Adressed execution issues with cli.py (had forgotted to call main at the end)
+
+
 ## v0.2.0 (2025-01-12)
 
 ### New Class Added 

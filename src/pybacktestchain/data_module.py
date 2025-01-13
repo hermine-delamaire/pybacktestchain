@@ -201,7 +201,7 @@ class MomentumStrategy(Information):
     # Default look-back period in days
     look_back_period: int = 90   
 
-    def compute_portfolio(self, t:datetime, information_set=None):
+    def compute_portfolio(self, t:datetime):
         logging.info(f"Computing portfolio for time {t} with look-back period {self.look_back_period} days.")
 
         # Define look-back period start
