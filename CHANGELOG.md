@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.7.1 (2025-01-14)
+
+### Add
+
+- Added additional information and details in the README file for better understanding
+
+
 ## v0.7.0 (2025-01-14)
 
 ### Add
