@@ -1,62 +1,81 @@
 # CHANGELOG
 
+## v0.7.0 (2025-01-14)
+
+### Add
+
+- Created PortfolioMetrics class to calculate advanced performance metrics including:
+    - Annualized Return
+    - Volatility
+    - Sharpe Ratio
+    - Max Drawdown
+- Integrated these metrics into Backtest_simple class
+- Added a unit test for these metrics test_backtest_metrics
+    - multiple strategies via "--strategies"
+    - dynamic rebalancing frequency via "--rebalance-frequency"
+
+### Fix
+
+- Fixed naming issues with lack of consistency across the code 'annualized_return' vs 'annualized_returns'
+
+
 ## v0.6.0 (2025-01-13)
 
-### Added
+### Add
 
 - Created EndOfDay and EndOfWeek class for daily and weekly rebalancing
 - Enhanced CLI to support:
     - multiple strategies via "--strategies"
     - dynamic rebalancing frequency via "--rebalance-frequency"
 
-### Fixed
+### Fix
 
 - Minor bugs for CLI arguments handling
 
-### Changed 
+### Change
 
 - Updated CLI to use "--strategies" instead of "--strategy" 
 - Adjusted the rebalancing logic to be more flexible and dyanamic for the user
 
 ## v0.5.0 (2025-01-13)
 
-### Added
+### Add
 
 - Support for custom universe with the "--universe" argument in the CLI file. With a CSV file, users can specify their own universe.
 - Created a custom_universe file to test this new feature 
 
-### Fixed
+### Fix
 
 - Checked that the CSV file contained a ticker column to move forward
 
 
 ## v0.4.0 (2025-01-13)
 
-### Added
+### Add
 
 - Added a MeanReversionStrategy class (to target underpriced assets based on historical average, tendency to revert to historical mean)
 - Added an EqualWeightsStrategy class (to allocated ewqual weights to all assets constituting the portfolio)
 - Updated CLI to include these new strategies
 
-### Fixed
+### Fix
 
 - Tried to implement a backtest for both new strategies
 
 ## v0.3.0 (2025-01-13)
 
-### Added 
+### Add
 
 - Added Command Line Interface functionality for Backtest_simple and Backtest classes
 - Integrated support for two strategies (Momentum and FirstTwoMoments)
 
-### Fixed 
+### Fix
 
 - Adressed execution issues with cli.py (had forgotted to call main at the end)
 
 
 ## v0.2.0 (2025-01-12)
 
-### New Class Added 
+### Add 
 
 Backtest_simple class for testing momentum strategy.
 - Failed to run the test
@@ -64,7 +83,7 @@ Backtest_simple class for testing momentum strategy.
 
 ## v0.1.0 (2025-01-12)
 
-### Added
+### Add
 
 Momentumstrategy` class for implementing a momentum strategy.
 - Computes portfolio weights based on past returns.

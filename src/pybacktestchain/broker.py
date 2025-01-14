@@ -8,6 +8,7 @@ import pickle
 from pybacktestchain.data_module import UNIVERSE_SEC, FirstTwoMoments, get_stocks_data, DataModule, Information
 from pybacktestchain.utils import generate_random_name
 from pybacktestchain.blockchain import Block, Blockchain
+from pybacktestchain.metrics import PortfolioMetrics
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -286,7 +287,7 @@ class Backtest:
         # store the backtest in the blockchain
         self.broker.blockchain.add_block(self.backtest_name, df.to_string())
     
-
+@dataclass
 class Backtest_simple:
     def __init__(
         self,
@@ -312,6 +313,9 @@ class Backtest_simple:
         # To have a dynamically generated name to avoid confusion
         self.backtest_name = f"backtest_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{random.randint(1000, 9999)}" 
 
+        # Creating an empty list to store daily portofolio values
+        self.daily_portfolio_values = []
+
     def run_backtest(self):
         logging.info(f"Running backtest from {self.initial_date} to {self.final_date}.")
         logging.info(f"Using universe: {self.universe}")
@@ -336,8 +340,12 @@ class Backtest_simple:
 
         # Run the backtest loop
         for t in pd.date_range(start=self.initial_date, end=self.final_date, freq='D'):
+            # Storing daily portfolio value
+            prices = info.get_prices(t)
+            portfolio_value = self.broker.get_portfolio_value(prices)
+            self.daily_portfolio_values.append(portfolio_value)
+
             if self.risk_model:
-                prices = info.get_prices(t)
                 portfolio = info.compute_portfolio(t, info.compute_information(t))
                 self.risk_model.trigger_stop_loss(t, portfolio, prices, self.broker)
 
@@ -353,10 +361,18 @@ class Backtest_simple:
         print(f"Universe tickers: {self.universe}")
         logging.info(f"Backtest completed. Final portfolio value: {self.broker.get_portfolio_value(info.get_prices(self.final_date))}")
         transaction_log = self.broker.get_transaction_log()
-        
+    
         # Save transaction log
         transaction_log.to_csv(f"backtests/{self.backtest_name}.csv")
         logging.info(f"Transaction log saved to backtests/{self.backtest_name}.csv")
+
+        # Calculate and display portfolio metrics
+        metrics = PortfolioMetrics(self.daily_portfolio_values)
+        print("\nPerformance Metrics:")
+        print(f"Annualized Return: {metrics.annualized_returns():.2%}")
+        print(f"Volatility: {metrics.volatility():.2%}")
+        print(f"Sharpe Ratio: {metrics.sharpe_ratio():.2f}")
+        print(f"Max Drawdown: {metrics.max_drawdown():.2%}")
     
     
 
