@@ -1,10 +1,13 @@
 [tool.poetry]
-name = "ProjectM2-Hermine_Delamaire"
+name = "projectm2_hermine_delamaire"
 version = "0.7.3"
 description = "Create, analyze, and compare backtesting strategies for financial portfolios. Stores backtest results securely on a blockchain."
 authors = ["Hermine Delamaire"]
 license = "MIT"
 readme = "README.md"
+packages = [
+    { include = "projectm2_hermine_delamaire", from = "src" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
