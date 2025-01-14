@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.7.3 (2025-01-14)
+
+### Change
+
+- Changed name project and author
+
 ## v0.7.2 (2025-01-14)
 
 ### Add

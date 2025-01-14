@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "pybacktestchain"
-version = "0.7.2"
+name = "ProjectM2-Hermine_Delamaire"
+version = "0.7.3"
 description = "Create, analyze, and compare backtesting strategies for financial portfolios. Stores backtest results securely on a blockchain."
-authors = ["Juan F. Imbet"]
+authors = ["Hermine Delamaire"]
 license = "MIT"
 readme = "README.md"
 
