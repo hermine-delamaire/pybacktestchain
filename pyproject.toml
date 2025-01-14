@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pybacktestchain"
-version = "0.7.1"
+version = "0.7.2"
 description = "Create, analyze, and compare backtesting strategies for financial portfolios. Stores backtest results securely on a blockchain."
 authors = ["Juan F. Imbet"]
 license = "MIT"

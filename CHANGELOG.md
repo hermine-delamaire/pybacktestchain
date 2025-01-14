@@ -1,11 +1,16 @@
 # CHANGELOG
 
+## v0.7.2 (2025-01-14)
+
+### Add
+
+- Specified Know Issues in the README file
+
 ## v0.7.1 (2025-01-14)
 
 ### Add
 
 - Added additional information and details in the README file for better understanding
-
 
 ## v0.7.0 (2025-01-14)
 
@@ -22,7 +27,6 @@
 ### Fix
 
 - Fixed naming issues with lack of consistency across the code 'annualized_return' vs 'annualized_returns'
-
 
 ## v0.6.0 (2025-01-13)
 
@@ -53,7 +57,6 @@
 
 - Checked that the CSV file contained a ticker column to move forward
 
-
 ## v0.4.0 (2025-01-13)
 
 ### Add
@@ -77,14 +80,12 @@
 
 - Adressed execution issues with cli.py (had forgotted to call main at the end)
 
-
 ## v0.2.0 (2025-01-12)
 
 ### Add 
 
 Backtest_simple class for testing momentum strategy.
 - Failed to run the test
-
 
 ## v0.1.0 (2025-01-12)
 
@@ -94,7 +95,6 @@ Momentumstrategy` class for implementing a momentum strategy.
 - Computes portfolio weights based on past returns.
 - Designed with a look-back period which can be adjusted.
 - Takes care of special cases including missing or negative returns.
-
 
 ## v0.0.1 (2024-08-28)
 

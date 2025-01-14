@@ -24,6 +24,11 @@ $ pip install pybacktestchain
     2. Implementing the {compute_portfolio} and {compute_information} methods.
     3. Registering your strategy in the CLI's {strategy_map}.
 
+## Know Issues
+- While the framework supports multiple strategies (e.g., Momentum, Mean Reversion), not all strategies produced valid backtest results.
+- Data inconsistencies or edge cases in the portfolio allocation logic may be the reason behind.
+- Future improvements could address these by debugging specific strategy implementation.
+
 ## Contributing
 
 Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.
