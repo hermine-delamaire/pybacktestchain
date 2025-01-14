@@ -1,6 +1,14 @@
 # pybacktestchain
 
-Store your backtests in a Blockchain
+Tool for creating, analyzing, and comparing backtesting strategies for financial portfolios. Stores backtest results securely on a blockchain. 
+
+## **Features**
+- **Backtest Multiple Strategies**: Includes Momentum, Mean Reversion, Equal Weight, and First Two Moments.
+- **Customizable Settings**: Adjust rebalancing frequencies (daily, weekly, monthly) and define custom universes of assets.
+- **Performance Metrics**: Evaluate portfolios with metrics like Annualized Returns, Volatility, Sharpe Ratio, and Max Drawdown.
+- **User-Friendly CLI**:  Easily execute backtests through the command-line interface.
+- **Extensible Framework**: Add new strategies, metrics, or features with minimal effort.
+- **Secure Blockchain Storage**: Store and verify your backtests using blockchain technology.
 
 ## Installation
 
@@ -10,7 +18,11 @@ $ pip install pybacktestchain
 
 ## Usage
 
-- TODO
+- Run backtest via CLI
+- Add your custom strategy; extend the framework by:
+    1. Creating a new class inheriting from {Information}.
+    2. Implementing the {compute_portfolio} and {compute_information} methods.
+    3. Registering your strategy in the CLI's {strategy_map}.
 
 ## Contributing
 
