@@ -11,8 +11,6 @@
     - Max Drawdown
 - Integrated these metrics into Backtest_simple class
 - Added a unit test for these metrics test_backtest_metrics
-    - multiple strategies via "--strategies"
-    - dynamic rebalancing frequency via "--rebalance-frequency"
 
 ### Fix
 
